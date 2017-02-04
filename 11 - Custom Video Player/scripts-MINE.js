@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */ 
 // Get our elements
 const player = document.querySelector('.player');
 const video = document.querySelector('.viewer');
@@ -17,7 +18,7 @@ function togglePlay() {
 
 function updateButton() { 
 	toggle.textContent = this.paused ? '►' :'❚ ❚';
-};
+}
 
 function skip() {
 	video.currentTime += parseFloat(this.dataset.skip);
