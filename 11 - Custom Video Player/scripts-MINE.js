@@ -7,6 +7,7 @@ const toggle = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider');
 const toggleFullScreen = player.querySelector('.full-screen-toggle');
+const toggleIcon = player.querySelector('.toggle-icon');
 
 
 // Build out functions
@@ -36,7 +37,14 @@ function scrub(e) {
 }
 
 function toggleScreenSize(e) {
-
+	console.dir(toggleIcon);
+	if(!document.webkitFullscreenElement) {
+		toggleIcon.textContent = 'fullscreen_exit';
+    	player.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+	}else {
+		toggleIcon.textContent = 'fullscreen';
+		document.webkitExitFullscreen();
+	}
 }
 
 // Hook up the event listeners
