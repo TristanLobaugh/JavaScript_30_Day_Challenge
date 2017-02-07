@@ -30,21 +30,21 @@
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const checkAllBtn = document.querySelector('input, [name=check]');
-  const uncheckAllBtn = document.querySelector('input, [name=uncheck]');
+  const checkAllBtn = document.querySelector('input[name=check]');
+  console.log(checkAllBtn);
+  const uncheckAllBtn = document.querySelector('input[name=uncheck]');
   const items = JSON.parse(localStorage.getItem('items')) || [];
 
   function addItem(e) {
     e.preventDefault();
     const text = (this.querySelector('[name=item]')).value;
-    console.log(text);
     const item = {
       text,
       done: false
     };
     items.push(item);
     populateList(items, itemsList);
-    localStorage.setItem('items', JSON.stringify(items));
+    setLocalStorage();
     this.reset();
   }
 
@@ -64,16 +64,24 @@
     const el = e.target;
     const index = el.dataset.index;
     items[index].done = !items[index].done;
-    localStorage.setItem('items', JSON.stringify(items));
+    setLocalStorage();
     populateList(items, itemsList);
   }
 
-  function checkAll(e) {
-    console.log(e.target);
+  function checkAll() {
+    items.forEach(item => item.done = true);
+    setLocalStorage();
+    populateList(items, itemsList);
   }
 
-  function uncheckAll(e) {
-    console.log(e.target);
+  function uncheckAll() {
+    items.forEach(item => item.done = false);
+    setLocalStorage();
+    populateList(items, itemsList);
+  }
+
+  function setLocalStorage() {
+    localStorage.setItem('items', JSON.stringify(items));
   }
 
   checkAllBtn.addEventListener('click', checkAll);
