@@ -23,12 +23,66 @@
       <input type="text" name="item" placeholder="Item Name" required>
       <input type="submit" value="+ Add Item">
     </form>
+    <input type="button" class="checks" name="check" value="Check All">
+    <input type="button" class="checks" name="uncheck" value="Uncheck All">
   </div>
 
 <script>
   const addItems = document.querySelector('.add-items');
   const itemsList = document.querySelector('.plates');
-  const items = [];
+  const checkAllBtn = document.querySelector('input, [name=check]');
+  const uncheckAllBtn = document.querySelector('input, [name=uncheck]');
+  const items = JSON.parse(localStorage.getItem('items')) || [];
+
+  function addItem(e) {
+    e.preventDefault();
+    const text = (this.querySelector('[name=item]')).value;
+    console.log(text);
+    const item = {
+      text,
+      done: false
+    };
+    items.push(item);
+    populateList(items, itemsList);
+    localStorage.setItem('items', JSON.stringify(items));
+    this.reset();
+  }
+
+  function populateList(plates = [], platesList) {
+    platesList.innerHTML = plates.map((plate, i) => {
+      return `
+        <li>
+          <input type="checkbox" data-index=${i} id="item${i}" ${plate.done ? 'checked' : ''} />
+          <label for="item${i}">${plate.text}</label>
+        </li>
+      `;
+    }).join('');
+  }
+
+  function toggleDone(e) {
+    if(!e.target.matches('input')) return;
+    const el = e.target;
+    const index = el.dataset.index;
+    items[index].done = !items[index].done;
+    localStorage.setItem('items', JSON.stringify(items));
+    populateList(items, itemsList);
+  }
+
+  function checkAll(e) {
+    console.log(e.target);
+  }
+
+  function uncheckAll(e) {
+    console.log(e.target);
+  }
+
+  checkAllBtn.addEventListener('click', checkAll);
+  uncheckAllBtn.addEventListener('click', uncheckAll);
+  addItems.addEventListener('submit', addItem);
+  itemsList.addEventListener('click', toggleDone);
+  populateList(items, itemsList);
+
+  //Make a button to check all or uncheck all
 
 </script>
 
